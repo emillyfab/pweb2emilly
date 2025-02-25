@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Carros</title>
+    <link rel="stylesheet" href="/style.css"> 
+</head>
+<body>
+    <header>
+        <h1>Lista de Carros Disponíveis</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li> 
+                <li><a href="formulario.html">Adicionar Carro</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <p>Lista de carros disponíveis.</p>
+    </main>
+</body>
+<script>
+   
+    fetch('/dados')
+        .then(response => response.json())
+        .then(carros => {
+            const main = document.querySelector('main');
+            let html = "<h2>Carros Cadastrados:</h2><ul>";
+
+            if (carros.length === 0) {
+                html += "<p>Nenhum carro cadastrado ainda.</p>";
+            } else {
+                carros.forEach(carro => {
+                    html += `
+                        <li>
+                            <strong>Modelo:</strong> ${carro.modelo} |
+                            <strong>Marca:</strong> ${carro.marca} |
+                            <strong>Ano:</strong> ${carro.ano} |
+                            <strong>Cor:</strong> ${carro.cor} |
+                            <strong>KM:</strong> ${carro.km} km |
+                            <strong>Valor:</strong> R$ ${carro.valor}
+                        </li>
+                    `;
+                });
+            }
+
+            html += "</ul>";
+            main.innerHTML += html;
+        })
+        .catch(error => console.error('Erro ao buscar dados:', error));
+</script>
+</html>
